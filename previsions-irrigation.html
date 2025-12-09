@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prévisions & Irrigation - GreenTwin</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- LEAFLET CSS CORRIGÉ : ATTRIBUTS INTEGRITY RETIRÉS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+    <link rel="stylesheet" href="style.css"> 
+
+    <style>
+        /* Styles pour la carte et les cartes de prévisions */
+        #map {
+            height: 400px; /* Taille fixe pour la carte, CRITIQUE pour l'affichage */
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        /* Assurez-vous que l'élément parent de la carte permet le positionnement absolu de la légende si vous en ajoutez une. */
+        .map-container {
+             position: relative;
+        }
+        .forecast-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .forecast-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+        }
+    </style>
+
+</head>
+<body id="previsions-irrigation"> 
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">GreenTwin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="jumeau-virtuel.html">Mon Jumeau Virtuel</a></li>
+                    <li class="nav-item"><a class="nav-link" href="surveillance-sante.html">Surveillance & Santé</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="previsions-irrigation.html">Prévisions & Irrigation</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-5">
+        <section class="py-5 bg-light text-center hero-subpage">
+            <div class="container">
+                <h1 class="display-4 fw-bold animate__animated animate__fadeInDown">Prévisions Climatiques & Irrigation Smart 🇹🇳</h1>
+                <p class="lead animate__animated animate__fadeInUp animate__delay-1s">Intégration d'API Météo Réelle pour une gestion de l'eau optimisée en Tunisie.</p>
+            </div>
+        </section>
+
+        <section class="py-5 bg-white">
+            <div class="container">
+                <h2 class="mb-4 text-primary fw-bold text-center animate__animated animate__fadeIn"><i class="bi bi-cloud-rain-heavy-fill me-3"></i> Prévisions Météo 5 Jours</h2>
+                <p class="text-center mb-5 lead">Données en temps réel issues d'OpenWeatherMap pour les alentours de **Tunis**.</p>
+                
+                <div id="weatherForecast" class="row g-4 justify-content-center">
+                    <div class="col-12 text-center">
+                        <p class="text-muted">Chargement des données météo...</p>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-5">
+                    <button class="btn btn-primary btn-lg" id="refreshWeatherBtn">Actualiser les Prévisions <i class="bi bi-arrow-clockwise ms-2"></i></button>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h2 class="mb-4 text-info fw-bold text-center"><i class="bi bi-geo-alt-fill me-3"></i> Carte des Précipitations en Temps Réel sur la Tunisie</h2>
+                <p class="text-center lead mb-4">Visualisez en temps réel l'intensité de la pluie pour la région tunisienne. <i class="bi bi-map"></i></p>
+                
+                <div id="map" class="map-container"></div>
+                
+                <!-- Légende manuelle pour OpenWeatherMap Rain Layer -->
+                <div id="rainLegend" class="leaflet-control p-2 bg-white rounded shadow-sm d-none" style="position: absolute; bottom: 50px; left: 10px; z-index: 1000; opacity: 0.9;">
+                    <h6 class="mb-2 fw-bold" style="font-size: 0.85rem; color: #333;">Intensité (mm/h)</h6>
+                    <div style="font-size: 0.75rem;">
+                        <span style="display: inline-block; width: 10px; height: 10px; background-color: #00FF00; border-radius: 50%; margin-right: 5px;"></span> Léger (&lt; 1)<br>
+                        <span style="display: inline-block; width: 10px; height: 10px; background-color: #0080FF; border-radius: 50%; margin-right: 5px;"></span> Modéré (1-5)<br>
+                        <span style="display: inline-block; width: 10px; height: 10px; background-color: #8000FF; border-radius: 50%; margin-right: 5px;"></span> Fort (5-10)<br>
+                        <span style="display: inline-block; width: 10px; height: 10px; background-color: #FF00FF; border-radius: 50%; margin-right: 5px;"></span> Très Fort (&gt; 10)
+                    </div>
+                </div>
+                
+                <div class="alert alert-info mt-4 text-center" role="alert">
+                    <i class="bi bi-info-circle-fill me-2"></i> Cette carte utilise la couche **'Rain'** d'OpenWeatherMap pour afficher les précipitations.
+                </div>
+            </div>
+        </section>
+        
+        <section id="irrigation-logic" class="py-5 bg-white">
+            <div class="container">
+                <div class="row align-items-center g-5">
+                    
+                    <div class="col-lg-6 animate__animated animate__fadeInLeft">
+                        <div class="bg-white p-4 rounded shadow-lg border border-secondary" style="height: 450px;">
+                            <h5 class="text-center mb-3 text-dark fw-bold">Humidité du Sol (Historique & Prévision)</h5>
+                            <canvas id="moistureChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6 animate__animated animate__fadeInRight">
+                        <h2 class="mb-4 text-success fw-bold"><i class="bi bi-water me-3"></i> Décision d'Arrosage Intelligente</h2>
+                        <p class="lead">Le moteur GreenTwin croise les données de **pluie réelle** et de l'**humidité du sol** (simulée/capteur) pour vous fournir une recommandation d'arrosage. </p>
+                        
+                        <div id="irrigationAlert" class="mt-4 alert d-none animate__animated animate__flash animate__infinite" role="alert">
+                            </div>
+                        
+                        <div class="card p-4 mt-4 bg-light shadow-sm border-success">
+                            <h5 class="card-title text-success mb-3">Recommandation du Jour :</h5>
+                            <div id="irrigationRecommendation" class="mb-3">
+                                <p class="text-muted">Analyse en cours...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-dark text-white-50 py-4 border-top border-secondary">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 GreenTwin. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- LEAFLET JS CORRIGÉ : ATTRIBUTS INTEGRITY RETIRÉS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script src="script.js"></script>
+</body>
+</html>

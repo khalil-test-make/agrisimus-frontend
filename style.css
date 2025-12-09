@@ -1,0 +1,189 @@
+/* ===========================
+   Bio-Futuriste — Feuilles flottantes
+   Light & professional
+   =========================== */
+
+:root{
+  --accent-green: #2e8b57;
+  --accent-soft: #9bd6b8;
+  --muted: #6b7280;
+  --glass: rgba(255,255,255,0.65);
+  --glass-2: rgba(255,255,255,0.45);
+  --bg-1: #f6fbf8;
+  --bg-2: #e8f6ee;
+  --shadow: 0 8px 20px rgba(32,41,43,0.06);
+}
+
+/* Base */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family: 'Poppins', sans-serif;
+  margin:0;
+  background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+  color:#123;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  padding-top:72px; /* for fixed nav */
+  overflow-x:hidden;
+}
+
+/* NAV */
+.nav-glass{
+  background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.75));
+  border-bottom: 1px solid rgba(20,60,40,0.05);
+  backdrop-filter: blur(6px);
+  padding:10px 0;
+}
+.brand-title{
+  color: var(--accent-green);
+  font-weight:600;
+  letter-spacing:0.2px;
+}
+.logo{
+  width:40px; height:40px; object-fit:cover; border-radius:8px;
+  box-shadow:0 6px 18px rgba(46,139,87,0.12);
+}
+
+/* HERO */
+.hero{
+  position:relative;
+  min-height:72vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:60px 0;
+  overflow:hidden;
+}
+.hero-inner{z-index:6; max-width:980px; padding:40px 20px;}
+.hero-title{
+  font-size:3.2rem;
+  font-weight:700;
+  margin:0 0 10px;
+  color: #114b34;
+  line-height:1.02;
+  letter-spacing:-0.6px;
+}
+.hero-subtitle{
+  color: #275942;
+  font-size:1.125rem;
+}
+
+/* subtle overlay texture */
+.hero-overlay{
+  position:absolute; inset:0; z-index:2;
+  background-image: radial-gradient(circle at 10% 10%, rgba(255,255,255,0.35) 0px, transparent 140px),
+                    radial-gradient(circle at 90% 80%, rgba(160,240,200,0.08) 0px, transparent 200px);
+  pointer-events:none;
+}
+
+/* Leaves layer */
+.leaves-layer{
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+}
+.leaf{
+  position:absolute;
+  width:56px; height:56px;
+  transform-origin:center;
+  will-change: transform, top, left, opacity;
+  animation-name: leafFloat;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  filter: drop-shadow(0 6px 10px rgba(30,80,60,0.08));
+  opacity:0.85;
+}
+.leaf use{ /* path fill color */
+  fill: var(--accent-green);
+  stroke: rgba(0,0,0,0.02);
+}
+
+/* animation: from top to bottom with slow sway */
+@keyframes leafFloat {
+  0% {
+    transform: translateY(-8vh) rotate(0deg) scale(1);
+    opacity: 0;
+  }
+  10% { opacity: 0.8; }
+  50% {
+    transform: translateY(45vh) rotate(180deg) scale(0.98);
+  }
+  90% { opacity:0.6; }
+  100% {
+    transform: translateY(110vh) rotate(360deg) scale(0.9);
+    opacity: 0;
+  }
+}
+
+/* Section headings */
+.section-heading{
+  font-weight:700;
+  color:#0f3f2e;
+  margin-bottom:1rem;
+}
+
+/* Glass cards */
+.glass-card{
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.82));
+  border: 1px solid rgba(20,80,60,0.06);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  transition: transform .35s cubic-bezier(.2,.9,.2,1), box-shadow .35s;
+}
+.glass-card:hover{
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px rgba(18,75,46,0.08);
+}
+.icon-large{
+  font-size:2.6rem;
+  color: var(--accent-green);
+}
+
+/* section soft background */
+.section-soft{
+  background: linear-gradient(180deg, rgba(250,255,250,0.8), transparent);
+  border-radius:12px;
+  padding:24px;
+  margin-top:24px;
+  box-shadow: 0 8px 24px rgba(10,30,20,0.03);
+}
+
+/* Forms */
+.form-control{
+  border-radius:10px;
+  border:1px solid rgba(30,60,40,0.08);
+  box-shadow:none;
+  padding:14px 16px;
+  background: #fff;
+  color:#123;
+}
+.form-control:focus{
+  outline:none;
+  box-shadow: 0 6px 18px rgba(46,139,87,0.12);
+  border-color: var(--accent-green);
+}
+
+/* Buttons */
+.btn-primary{
+  background: linear-gradient(90deg, var(--accent-green), var(--accent-soft));
+  border:none;
+  color:#05210f;
+  padding:12px 20px;
+  font-weight:600;
+  border-radius:10px;
+  box-shadow: 0 10px 28px rgba(46,139,87,0.12);
+}
+.btn-outline-primary{
+  color: var(--accent-green);
+  border: 1px solid rgba(46,139,87,0.12);
+  background: transparent;
+  border-radius:10px;
+}
+
+/* Footer */
+footer{ background:transparent; }
+
+/* Responsive tweaks */
+@media (max-width:991px){
+  .hero-title{ font-size:2.4rem; }
+  .leaf{ width:44px; height:44px; }
+}

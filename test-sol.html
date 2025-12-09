@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test du Sol - GreenTwin</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .hero-subpage {
+        background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8)), url('https://placehold.co/1920x400/f8f9fa/212529?text=GREEN+TWIN+SOIL+TEST');
+        background-size: cover;
+        background-position: center;
+        padding: 5rem 0;
+    }
+  </style>
+</head>
+<body>
+
+    <svg aria-hidden="true" style="position:absolute; width:0; height:0; overflow:hidden;">
+      <defs>
+        <g id="leafSymbol" transform="scale(0.9)">
+          <path d="M12.6 2.2c-2.4 1.6-5.2 4.6-6.4 7.2-1.2 2.6-1.5 5.7-.7 8.5 1.7 6 7 7.7 11.2 7.7 4.3 0 9.7-1.7 11.2-7.7.8-2.8.5-5.9-.7-8.5-1.2-2.6-4-5.6-6.4-7.2C17.8 1.4 15.2 0 12.6 0c-2.6 0-5.2 1.4-7.8 3.2z" fill="#9bd6b8" stroke="#2e8b57" stroke-width=".5"/>
+        </g>
+      </defs>
+    </svg>
+
+    <nav class="navbar navbar-expand-lg nav-glass fixed-top py-3">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/greentwin-logo.png" alt="GreenTwin Logo" class="d-inline-block align-text-top rounded-circle me-2" onerror="this.src='https://via.placeholder.com/40x40?text=GT'" style="height: 40px; width: 40px;"> 
+                <span class="fw-bold text-dark">GreenTwin</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="jumeau-virtuel.html">Mon Jumeau Virtuel</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="surveillance-sante.html">Surveillance & Santé</a></li>
+                    <li class="nav-item"><a class="nav-link" href="previsions-irrigation.html">Prévisions & Irrigation</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+  <main>
+    <section class="py-5 text-center hero-subpage">
+        <div class="container" data-aos="fade-up">
+            <h1 class="display-4 fw-bold text-dark animate__animated animate__fadeInDown">Analyse de la Composition du Sol</h1>
+            <p class="lead text-muted animate__animated animate__fadeInUp animate__delay-1s">Optimisez la fertilité de votre parcelle en quelques clics grâce aux données de votre sol.</p>
+        </div>
+    </section>
+
+    <section class="py-5 section-soft">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8" data-aos="zoom-in">
+                    <div class="card glass-card p-5 shadow-lg">
+                        <h2 class="text-dark fw-bold mb-4 text-center"><i class="bi bi-clipboard-data me-2 text-success"></i> Test Rapide du Sol</h2>
+                        <form id="solForm" class="row g-3">
+                            <div class="col-md-6">
+                                <label for="phInput" class="form-label">pH du sol :</label>
+                                <input id="phInput" type="number" step="0.1" name="ph" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="humidityInput" class="form-label">Humidité (%) :</label>
+                                <input id="humidityInput" type="number" name="humidity" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="soilTypeSelect" class="form-label">Type de sol :</label>
+                                <select id="soilTypeSelect" name="soilType" class="form-select form-control">
+                                    <option>Argile</option>
+                                    <option>Sableux</option>
+                                    <option>Limon</option>
+                                    <option>Calcaire</option>
+                                </select>
+                            </div>
+                            <div class="col-12 mt-4">
+                                <button type="submit" class="btn btn-success btn-lg w-100">
+                                    <i class="bi bi-search me-2"></i> ANALYSER MON SOL
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="resultat-sol" class="mt-5 p-4 bg-white rounded shadow-lg border border-light" data-aos="fade-up" data-aos-delay="200">
+                <h3 class="text-success fw-bold"><i class="bi bi-box-seam me-2"></i> Résultat d'Analyse</h3>
+                <p class="text-muted mb-0">Remplissez le formulaire ci-dessus pour obtenir une évaluation de votre sol.</p>
+            </div>
+        </div>
+    </section>
+  </main>
+
+    <footer class="bg-dark text-white-50 py-4 border-top border-secondary">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025GreenTwin. Tous droits réservés.</p>
+            <p class="mb-0"><a href="#" class="text-success text-decoration-none">Politique de Confidentialité</a> | <a href="#" class="text-success text-decoration-none">Conditions d'Utilisation</a></p>
+        </div>
+    </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init();
+    
+    // Logique de test du sol (conservée)
+    const resultDiv = document.getElementById('resultat-sol');
+
+    document.getElementById('solForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const ph = parseFloat(this.ph.value);
+      const humidity = parseFloat(this.humidity.value);
+      let resultat = "";
+      let alertClass = "";
+
+      if(ph >= 6 && ph <= 7 && humidity >= 40 && humidity <= 60) {
+        resultat = "✅ Sol idéal pour la culture. Le pH et l'humidité sont optimaux.";
+        alertClass = "alert-success";
+      } else if(ph < 6) {
+        resultat = "⚠️ Sol trop acide. Ajouter du calcaire ou de la cendre de bois pour augmenter le pH.";
+        alertClass = "alert-warning";
+      } else if(ph > 7.5) {
+        resultat = "⚠️ Sol trop alcalin. Ajouter du compost organique ou du soufre pour réduire le pH.";
+        alertClass = "alert-warning";
+      } else if(humidity < 40) {
+        resultat = "⚠️ Sol trop sec. Un besoin d'arrosage est détecté. Vérifiez vos capteurs ou programmez une irrigation.";
+        alertClass = "alert-danger";
+      } else if(humidity > 60) {
+        resultat = "⚠️ Sol trop humide. Risque de pourriture des racines. Vérifiez le drainage.";
+        alertClass = "alert-warning";
+      } else {
+        resultat = "ℹ️ Sol dans des paramètres acceptables, mais avec des ajustements possibles. Consultez un agronome.";
+        alertClass = "alert-info";
+      }
+      
+      const soilType = this.soilType.value;
+      const recommandationNutriment = (ph >= 6 && ph <= 7) ? "Les nutriments devraient être bien absorbés." : "L'absorption des nutriments pourrait être compromise.";
+
+      resultDiv.innerHTML = `
+        <h3 class="text-dark fw-bold"><i class="bi bi-box-seam me-2 text-success"></i> Résultat d'Analyse</h3>
+        <div class="alert ${alertClass} mt-3">
+            <p class="fw-semibold mb-1">${resultat}</p>
+        </div>
+        <ul class="list-unstyled">
+            <li><span class="fw-semibold">pH Mesuré :</span> ${ph}</li>
+            <li><span class="fw-semibold">Humidité Mesurée :</span> ${humidity}%</li>
+            <li><span class="fw-semibold">Type de Sol Déclaré :</span> ${soilType}</li>
+            <li class="mt-2"><span class="fw-semibold text-info"><i class="bi bi-lightbulb me-2"></i> Recommandation :</span> ${recommandationNutriment}</li>
+        </ul>
+      `;
+      // Scroll vers le résultat
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  </script>
+</body>
+</html>

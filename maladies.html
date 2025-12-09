@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Détection des Maladies - GreenTwin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"> 
+  <link rel="stylesheet" href="style.css"> </head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/greentwin-logo.png" alt="GreenTwin Logo" class="d-inline-block align-text-top rounded-circle me-2" style="width: 40px; height: 40px;" onerror="this.onerror=null; this.src='data:image/svg+xml;charset=utf8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'40\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'white\'%3EGT%3C/text%3E%3C/svg%3E'"> 
+                GreenTwin
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="jumeau-virtuel.html">Mon Jumeau Virtuel</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="surveillance-sante.html">Surveillance & Santé</a></li>
+                    <li class="nav-item"><a class="nav-link" href="previsions-irrigation.html">Prévisions & Irrigation</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+  <main>
+    <section class="hero-subpage text-center text-white">
+        <div class="container">
+            <h1 class="display-4 fw-bold">Détection et Fiches Maladies</h1>
+            <p class="lead">Consultez les maladies typiques pour vos cultures.</p>
+        </div>
+    </section>
+
+    <section class="container py-5">
+        <div class="row g-5">
+            <div class="col-lg-4">
+                <div class="card p-4">
+                    <h2 class="mb-4 section-title">Sélectionnez la Culture</h2>
+                    <ul class="list-unstyled plant-list">
+                        <li><a onclick="afficherFiche('tomate')"><i class="bi bi-flower1 me-2"></i> Tomate</a></li>
+                        <li><a onclick="afficherFiche('mais')"><i class="bi bi-flower1 me-2"></i> Maïs</a></li>
+                        <li><a onclick="afficherFiche('pommeDeTerre')"><i class="bi bi-flower1 me-2"></i> Pomme de terre</a></li>
+                        <li><a href="test-sol.html" class="mt-4"><i class="bi bi-search me-2"></i> Tester le Sol</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="card p-4 h-100" id="fiche-plante">
+                    <h3 class="fw-bold text-dark"><i class="bi bi-journal-text me-2"></i> Fiche Plante</h3>
+                    <p class="text-secondary mt-3">Sélectionnez une plante pour voir la fiche détaillée des maladies et les conseils de prévention.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+  </main>
+
+  <footer class="bg-dark text-white-50 py-4 border-top border-secondary">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025GreenTwin. Tous droits réservés.</p>
+            <p class="mb-0"><a href="#" class="text-success text-decoration-none">Politique de Confidentialité</a> | <a href="#" class="text-success text-decoration-none">Conditions d'Utilisation</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // La logique JS originale est conservée et utilise les nouvelles classes CSS
+    const fiches = {
+      tomate: {
+        nom: "Tomate",
+        image: "https://upload.wikimedia.org/wikipedia/commons/8/88/Tomato_je.jpg",
+        maladies: "Mildiou, Fusariose",
+        conseils: "Arrosage régulier, traitement fongicide, éviter humidité excessive"
+      },
+      mais: {
+        nom: "Maïs",
+        image: "https://upload.wikimedia.org/wikipedia/commons/0/0c/Maizecobs.jpg",
+        maladies: "Rouille, Charançon",
+        conseils: "Rotation des cultures, insecticide si nécessaire"
+      },
+      pommeDeTerre: {
+        nom: "Pomme de terre",
+        image: "https://upload.wikimedia.org/wikipedia/commons/6/60/Potatoes.jpg",
+        maladies: "Mildiou, Nématodes",
+        conseils: "Fongicide, rotation des cultures, éviter stagnation d'eau"
+      }
+    };
+
+    function afficherFiche(plante) {
+      const fiche = fiches[plante];
+      const container = document.getElementById('fiche-plante');
+      
+      // Utilisation d'une transition en douceur pour un effet pro
+      container.classList.add('animate__animated', 'animate__fadeOut');
+      container.style.opacity = 0;
+      
+      setTimeout(() => {
+        container.innerHTML = `
+            <h3 class="fw-bold text-success"><i class="bi bi-check-circle-fill me-2"></i> Fiche : ${fiche.nom}</h3>
+            <hr>
+            <div class="row g-4">
+                <div class="col-md-5">
+                    <img src="${fiche.image}" alt="${fiche.nom}" class="img-fluid result-image">
+                </div>
+                <div class="col-md-7">
+                    <p class="fw-bold mb-2 text-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i> Maladies Courantes :</p>
+                    <p>${fiche.maladies}</p>
+                    
+                    <p class="fw-bold mb-2 text-primary"><i class="bi bi-tools me-2"></i> Conseils du Jumeau Virtuel :</p>
+                    <p>${fiche.conseils}</p>
+                </div>
+            </div>
+        `;
+        container.classList.remove('animate__fadeOut');
+        container.classList.add('animate__fadeIn');
+        container.style.opacity = 1;
+      }, 300); // Délai de la transition
+    }
+  </script>
+</body>
+</html>

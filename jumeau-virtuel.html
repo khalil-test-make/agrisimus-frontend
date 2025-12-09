@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Jumeau Virtuel - GreenTwin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"> 
+    
+    <style>
+        /* =========================================================================
+           NOUVEAU STYLE : ÉCO-FUTURISTE / GLASS MORPHISM
+           ========================================================================= */
+
+        :root {
+            --gt-green: #2e8b57; /* Vert accent principal (Sea Green) */
+            --gt-dark-green: #1a5c37;
+            --gt-light-bg: #f5fff8; /* Fond légèrement teinté de vert */
+            --gt-medium-bg: #eaf8f0;
+            --gt-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            --gt-text-code: #79f29c; /* Vert vif pour le terminal */
+        }
+
+        /* Styles de base */
+        body { 
+            padding-top: 72px; 
+            font-family: 'Poppins', sans-serif; /* Nouveau style de police */
+            background-color: var(--gt-light-bg); 
+            color: #123; /* Couleur de texte sombre */
+        }
+        
+        /* Overrides Bootstrap */
+        .text-success { color: var(--gt-green) !important; }
+        .btn-primary { 
+            background-color: var(--gt-green); 
+            border-color: var(--gt-green); 
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover { 
+            background-color: var(--gt-dark-green); 
+            border-color: var(--gt-dark-green); 
+            box-shadow: 0 4px 10px rgba(46, 139, 87, 0.4);
+        }
+        .btn-outline-secondary { color: var(--gt-green); border-color: var(--gt-green); }
+        .btn-outline-secondary:hover { background-color: var(--gt-green); color: white; }
+
+
+        /* Hero Section */
+        .hero-subpage {
+            /* Utilisation d'un fond plus clair et plus cohérent */
+            background-image: linear-gradient(rgba(234, 248, 240, 0.9), rgba(234, 248, 240, 0.8)), url('https://placehold.co/1920x400/eaf8f0/2e8b57?text=GREEN+TWIN+MODELING');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 3px solid var(--gt-medium-bg);
+        }
+        .hero-subpage .display-4 { color: var(--gt-dark-green); }
+
+
+        /* Styles Génériques des Cartes */
+        .card { 
+            border-radius: 1.5rem; /* Coins plus arrondis */
+            box-shadow: var(--gt-shadow);
+            border: none;
+            transition: transform 0.3s ease;
+        }
+        .card:hover { transform: translateY(-3px); }
+
+
+        /* Styles pour la Simulation Dynamique (Terminal) */
+        .data-stream-box {
+            min-height: 200px; /* Augmenter la hauteur pour l'impact */
+            overflow: hidden;
+            background-color: #1c2a22; /* Darker, slightly greenish black */
+            color: var(--gt-text-code); 
+            font-family: 'Consolas', 'Courier New', monospace;
+            border: 2px solid var(--gt-text-code);
+            box-shadow: 0 0 20px rgba(121, 242, 156, 0.6);
+            border-radius: 1.5rem; 
+            padding: 1.5rem;
+        }
+        .data-processing {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+        .prototype-iot-image {
+            max-height: 500px;
+            object-fit: cover;
+            width: 100%;
+            border-radius: 1.5rem; /* Smoother corners */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); 
+        }
+
+        /* Cadre de la simulation (col-lg-6 qui contient le formulaire) */
+        .simulation-card-container {
+            background-color: var(--gt-medium-bg);
+            border-radius: 1.5rem;
+            padding: 2rem;
+        }
+
+
+        /* Styles pour le bloc de visualisation 3D */
+        .visualisation-box {
+            background: linear-gradient(135deg, #1a5c37, #2e8b57); /* Dégradé vert plus profond */
+            color: white;
+            border-radius: 1.5rem;
+            min-height: 400px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(46, 139, 87, 0.3);
+        }
+
+        /* Styles pour la section du rapport détaillé (Glassmorphism) */
+        .report-details-section {
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white/glass */
+            backdrop-filter: blur(5px); /* Effet de flou sur l'arrière-plan */
+            border-radius: 2rem; 
+            padding: 3rem;
+            margin-top: 3rem; 
+            box-shadow: 0 12px 30px rgba(46, 139, 87, 0.15); /* Ombre douce et verte */
+            border: 1px solid rgba(46, 139, 87, 0.1); /* Bordure très fine */
+        }
+        .data-point { margin-bottom: 1.5rem; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img src="#" alt="GreenTwin Logo" class="d-inline-block align-text-top rounded-circle me-2" style="width: 40px; height: 40px; background-color: var(--gt-green, #2e8b57);" onerror="this.onerror=null; this.src='data:image/svg+xml;charset=utf8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ctext x=\'50%25\' y=\'50%25\' font-size=\'40\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'white\'%3EGT%3C/text%3E%3C/svg%3E'"> 
+                GreenTwin
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="jumeau-virtuel.html">Mon Jumeau Virtuel</a></li>
+                    <li class="nav-item"><a class="nav-link" href="surveillance-sante.html">Surveillance & Santé</a></li>
+                    <li class="nav-item"><a class="nav-link" href="previsions-irrigation.html">Prévisions & Irrigation</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-5">
+        <section class="py-5 text-center hero-subpage">
+            <div class="container">
+                <h1 class="display-4 fw-bold animate__animated animate__fadeInDown">Mon Jumeau Virtuel : Modélisation et Simulation Intelligente</h1>
+                <p class="lead animate__animated animate__fadeInUp animate__delay-1s">Créez une réplique numérique exacte de votre terrain et simulez l'avenir de vos cultures.</p>
+            </div>
+        </section>
+
+        <section class="py-5 bg-white">
+            <div class="container">
+                <div class="row align-items-center g-5">
+                    
+                    <div class="col-lg-6 animate__animated animate__fadeInLeft">
+                        <img src="images/unnamed (1).jpg" alt="Prototype de station de capteurs IoT GreenTwin sur le terrain" class="img-fluid rounded shadow-lg border border-light prototype-iot-image">
+                        <p class="text-center small text-muted mt-3">Notre station de capteurs IoT robuste pour la collecte de données environnementales en temps réel.</p>
+                    </div>
+
+                    <div class="col-lg-6 animate__animated animate__fadeInRight">
+                        <h2 class="mb-4 text-success fw-bold"><i class="bi bi-grid-3x3-gap-fill me-3"></i> Votre Terrain, Numérisé en 3D</h2>
+                        <p class="lead">Plongez au cœur de votre exploitation avec une **visualisation 3D interactive** de votre terrain. Notre jumeau numérique agrège les données de capteurs (humidité, pH, nutriments, température) pour créer une réplique fidèle et en temps réel de votre environnement agricole.</p>
+                        <p>Chaque parcelle est une entité vivante, évoluant avec les données. Identifiez les zones à fort potentiel et celles nécessitant une attention particulière grâce à une interface intuitive et des indicateurs visuels.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-5 bg-light">
+            <div class="container">
+                <div class="row align-items-center flex-row-reverse g-5">
+                    
+                    <div class="col-lg-6 animate__animated animate__fadeInRight simulation-card-container">
+                        <h2 class="mb-4 text-primary fw-bold"><i class="bi bi-graph-up-arrow me-3"></i> Simulation de Plantation Optimisée</h2>
+                        <p class="lead">Prenez des décisions éclairées *avant* de semer. Notre outil de simulation avancé, alimenté par des modèles d'**apprentissage automatique (ML) fictifs**, vous permet de tester l'adéquation de différentes cultures à vos parcelles.</p>
+                        
+                        <div class="card p-4 mt-4 bg-white shadow-lg border-primary">
+                            <h5 class="card-title text-primary mb-3">Lancez une Simulation Rapide :</h5>
+                            <div class="mb-3">
+                                <label for="plantType" class="form-label fw-bold">Sélectionnez votre future culture :</label>
+                                <select class="form-select" id="plantType">
+                                    <option value="tomate">Tomate (Potager)</option>
+                                    <option value="ble">Blé (Grande Culture)</option>
+                                    <option value="salade">Salade (Maraîchage)</option>
+                                    <option value="mais">Maïs (Grande Culture)</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary btn-lg w-100 mb-3" id="simulatePlantingBtn">Lancer la Simulation <i class="bi bi-arrow-right-circle-fill ms-2"></i></button>
+                            
+                            <div id="simulationProcess" class="mt-4">
+                                <div id="dataStream" class="data-stream-box rounded mb-3" style="display: none;">
+                                    <div class="data-processing text-warning fw-bold" id="processingStatus" style="display: none;">
+                                        <div class="spinner-border text-warning" role="status"></div>
+                                        <p class="mt-2 mb-0">Traitement ML des données...</p>
+                                    </div>
+                                </div>
+                                <div id="simulationResult" class="alert d-none animate__animated animate__fadeIn"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6 animate__animated animate__fadeInLeft">
+                        <div class="visualisation-box text-center shadow-lg">
+                            <i class="bi bi-gear-wide-connected display-1 mb-3 text-white animate__animated animate__tada animate__infinite" style="color: var(--gt-text-code) !important;"></i>
+                            <h3>Visualisation des Performances Simultanées</h3>
+                            <p class="lead">Le Jumeau Virtuel donne vie à la simulation.</p>
+                            <p class="small text-white-50 mt-3">Visualisation 3D en temps réel des résultats de la simulation de croissance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="reportDetailsContainer" class="py-5 bg-light" style="display: none;">
+            <div class="container">
+                <div class="report-details-section animate__animated animate__fadeInUp">
+                    <h2 class="mb-4 text-center text-success fw-bold" id="reportDetailsTitle"><i class="bi bi-clipboard-data-fill me-2"></i> Rapport Détaillé de Simulation</h2>
+                    <p class="lead text-center" id="reportDetailsSubtitle"></p>
+                    <hr class="my-4">
+                    <div id="reportContent" class="text-start">
+                        </div>
+                    <div class="text-center mt-4">
+                        <a href="jumeau-virtuel.html" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2"></i> Nouvelle Simulation</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-dark text-white-50 py-4 border-top border-secondary">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 GreenTwin. Tous droits réservés.</p>
+            <p class="mb-0"><a href="#" class="text-success text-decoration-none">Politique de Confidentialité</a> | <a href="#" class="text-success text-decoration-none">Conditions d'Utilisation</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Le JavaScript a été conservé tel quel pour ne pas impacter la logique de simulation,
+        // mais les couleurs/classes d'affichage des résultats ont été harmonisées via le nouveau CSS.
+        document.addEventListener('DOMContentLoaded', () => {
+            const simulateBtn = document.getElementById('simulatePlantingBtn');
+            const plantTypeSelect = document.getElementById('plantType');
+            const dataStreamBox = document.getElementById('dataStream');
+            const processingStatus = document.getElementById('processingStatus');
+            const resultDisplay = document.getElementById('simulationResult');
+            const reportDetailsContainer = document.getElementById('reportDetailsContainer');
+            const reportDetailsTitle = document.getElementById('reportDetailsTitle');
+            const reportDetailsSubtitle = document.getElementById('reportDetailsSubtitle');
+            const reportContentDiv = document.getElementById('reportContent');
+
+            const types = ["Temp", "Humid", "pH", "Nutr", "Lumière"];
+            
+            // Logique pour la simulation de données et les détails des rapports
+            const simulationResults = {
+                tomate: {
+                    name: 'Tomate (Potager)',
+                    yield: 'Très Élevé (95%)',
+                    risk: 'Faible (10% de risque d\'Oïdium)',
+                    class: 'alert-success',
+                    icon: 'bi-check-circle-fill',
+                    details: 'La Tomate est idéale. Les conditions actuelles de pH (6.5-7.0) et de nutriments (Azote élevé, Potassium moyen) garantissent une croissance optimale. Surveillance des niveaux d\'humidité requis uniquement en période de canicule. **Recommandation :** Prévoir une ombrière légère en cas de pics de température supérieurs à 35°C.',
+                    data: [
+                        { label: 'pH Moyen du Sol', value: '6.8', icon: 'bi-droplet-half' },
+                        { label: 'Humidité Moyenne (Prévision)', value: '75%', icon: 'bi-moisture' },
+                        { label: 'Température Racine Optimale', value: '24°C', icon: 'bi-thermometer-half' },
+                        { label: 'Nutriment Limitant', value: 'Potassium (Faible)', icon: 'bi-graph-down' }
+                    ]
+                },
+                ble: {
+                    name: 'Blé (Grande Culture)',
+                    yield: 'Modéré (65%)',
+                    risk: 'Moyen (35% de risque de Sécheresse estivale)',
+                    class: 'alert-warning',
+                    icon: 'bi-exclamation-triangle-fill',
+                    details: 'Le Blé est viable mais nécessite une gestion proactive de l\'irrigation. Le modèle prédit une réduction de 20% du rendement si l\'humidité du sol descend sous les 50% pendant plus de 10 jours consécutifs. **Recommandation :** Activer l\'irrigation de précision à l\'approche de l\'été (Juin) et maintenir l\'humidité entre 60% et 70%.',
+                    data: [
+                        { label: 'pH Moyen du Sol', value: '6.2', icon: 'bi-droplet-half' },
+                        { label: 'Humidité Moyenne (Prévision)', value: '55%', icon: 'bi-moisture' },
+                        { label: 'Température Racine', value: '18°C', icon: 'bi-thermometer-half' },
+                        { label: 'Nutriment Limitant', value: 'Azote (Moyen)', icon: 'bi-graph-up' }
+                    ]
+                },
+                salade: {
+                    name: 'Salade (Maraîchage)',
+                    yield: 'Élevé (80%)',
+                    risk: 'Très Faible (5% de risque d\'attaque de Pucerons)',
+                    class: 'alert-success',
+                    icon: 'bi-check-circle-fill',
+                    details: 'La Salade est très bien adaptée. Le risque principal est lié aux parasites. Le Jumeau Virtuel recommande une inspection par drone au jour J+30 pour anticiper les attaques de pucerons. **Recommandation :** Utilisation d\'un filet anti-insectes biologique sur les parcelles les plus exposées au vent.',
+                    data: [
+                        { label: 'pH Moyen du Sol', value: '6.0', icon: 'bi-droplet-half' },
+                        { label: 'Humidité Moyenne (Prévision)', value: '85%', icon: 'bi-moisture' },
+                        { label: 'Température Racine', value: '15°C', icon: 'bi-thermometer-half' },
+                        { label: 'Nutriment Limitant', value: 'Phosphore (Optimal)', icon: 'bi-check-lg' }
+                    ]
+                },
+                mais: {
+                    name: 'Maïs (Grande Culture)',
+                    yield: 'Faible (40%)',
+                    risk: 'Élevé (60% de risque de Mauvaise qualité de sol - pH)',
+                    class: 'alert-danger',
+                    icon: 'bi-x-circle-fill',
+                    details: 'Le Maïs est fortement déconseillé. Les capteurs de sol indiquent un pH trop acide (moyenne de 5.5), ce qui entrave l\'absorption des nutriments essentiels. **Recommandation :** Un amendement calcaire est obligatoire. Sans correction, le rendement attendu est inférieur à la moyenne régionale de 60%.',
+                    data: [
+                        { label: 'pH Moyen du Sol', value: '5.5', icon: 'bi-x-circle' },
+                        { label: 'Humidité Moyenne (Prévision)', value: '60%', icon: 'bi-moisture' },
+                        { label: 'Température Racine', value: '25°C', icon: 'bi-thermometer-half' },
+                        { label: 'Nutriment Limitant', value: 'Azote (Élevé)', icon: 'bi-graph-up' }
+                    ]
+                }
+            };
+
+            // Fonction pour générer une ligne de fausse donnée
+            const generateFakeDataLine = (type) => {
+                const val = (Math.random() * 100).toFixed(2);
+                const unit = (type === "pH") ? '' : (type === "Humid" ? '%' : '°C');
+                return `<div class="data-line">> [${new Date().toLocaleTimeString('fr-FR')}] READ ${type}: ${val}${unit} - PARCELLE 1A</div>`;
+            };
+
+            simulateBtn.addEventListener('click', () => {
+                const selectedPlant = plantTypeSelect.value;
+                const result = simulationResults[selectedPlant];
+                const selectedPlantText = plantTypeSelect.options[plantTypeSelect.selectedIndex].text;
+
+                // Cacher la section de rapport précédente
+                reportDetailsContainer.style.display = 'none';
+
+                // 1. Réinitialisation et lancement
+                simulateBtn.disabled = true;
+                simulateBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Lecture des données...';
+                dataStreamBox.innerHTML = '';
+                resultDisplay.classList.add('d-none');
+                dataStreamBox.style.display = 'block';
+                processingStatus.style.display = 'none';
+
+                let dataIntervalId;
+                let dataCount = 0;
+                const maxData = 10;
+                
+                // 2. Simulation de la lecture des données (50ms par ligne)
+                dataIntervalId = setInterval(() => {
+                    if (dataCount >= maxData) {
+                        clearInterval(dataIntervalId);
+                        
+                        // 3. Passage au Traitement ML
+                        dataStreamBox.innerHTML = '';
+                        processingStatus.style.display = 'block';
+                        simulateBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Traitement ML en cours...';
+
+                        // 4. Affichage du Résultat après un délai (1 seconde)
+                        setTimeout(() => {
+                            processingStatus.style.display = 'none';
+                            dataStreamBox.style.display = 'none';
+
+                            // Affichage du résultat final abrégé
+                            resultDisplay.className = `alert ${result.class} mt-3 animate__animated animate__fadeIn`;
+                            resultDisplay.innerHTML = `
+                                <h4 class="alert-heading fw-bold"><i class="bi ${result.icon} me-2"></i> RÉSULTAT DE LA SIMULATION : ${selectedPlantText}</h4>
+                                <hr>
+                                <p class="mb-1">**Rendement Estimé :** <span class="fw-bold">${result.yield}</span></p>
+                                <p class="mb-0">**Risques Majeurs :** <span class="fw-bold">${result.risk}</span></p>
+                                <button class="btn btn-sm btn-outline-secondary mt-3" id="viewDetailedReportBtn">Voir le Rapport Détaillé du Jumeau Virtuel</button>
+                            `;
+                            resultDisplay.classList.remove('d-none');
+                            
+                            // Réactivation du bouton principal
+                            simulateBtn.disabled = false;
+                            simulateBtn.innerHTML = 'Lancer la Simulation <i class="bi bi-arrow-right-circle-fill ms-2"></i>';
+
+                            // Ajouter un écouteur d'événements pour le nouveau bouton de rapport détaillé
+                            document.getElementById('viewDetailedReportBtn').addEventListener('click', () => {
+                                displayDetailedReport(selectedPlant);
+                            });
+
+                        }, 1000); // Délai de traitement ML (1 seconde)
+                        
+                        return;
+                    }
+                    
+                    dataStreamBox.insertAdjacentHTML('beforeend', generateFakeDataLine(types[dataCount % types.length]));
+                    dataStreamBox.scrollTop = dataStreamBox.scrollHeight;
+                    dataCount++;
+                }, 50);
+            });
+
+            // Fonction pour afficher le rapport détaillé dans la même page
+            const displayDetailedReport = (plantKey) => {
+                const selectedReport = simulationResults[plantKey];
+
+                if (selectedReport) {
+                    reportDetailsTitle.innerHTML = `<i class="bi bi-clipboard-data-fill me-2"></i> Rapport Détaillé pour la ${selectedReport.name}`;
+                    reportDetailsSubtitle.innerHTML = `Rendement Estimé: <span class="fw-bold ${selectedReport.class.replace('alert-', 'text-')}">${selectedReport.yield}</span> | Risques: ${selectedReport.risk}`;
+
+                    let dataHtml = '';
+                    selectedReport.data.forEach(item => {
+                        dataHtml += `
+                            <div class="col-md-3 data-point text-center">
+                                <i class="bi ${item.icon} display-4 ${selectedReport.class.replace('alert-', 'text-')}"></i>
+                                <h5 class="mt-2 mb-0">${item.value}</h5>
+                                <p class="text-muted small">${item.label}</p>
+                            </div>
+                        `;
+                    });
+
+                    reportContentDiv.innerHTML = `
+                        <h3 class="mb-4 text-primary"><i class="bi bi-bar-chart-line-fill me-2"></i> Indicateurs Clés du Jumeau</h3>
+                        <div class="row text-center mb-5">
+                            ${dataHtml}
+                        </div>
+
+                        <h3 class="mb-3 text-success"><i class="bi bi-check-circle-fill me-2"></i> Synthèse et Recommandations ML</h3>
+                        <p class="lead">${selectedReport.details}</p>
+                        
+                        <hr class="my-4">
+
+                        <h4 class="text-secondary mb-3"><i class="bi bi-tools me-2"></i> Actions Proposées par GreenTwin</h4>
+                        <p>1. **Irrigation :** Mettre en place un plan d'irrigation variable pour la parcelle 1A (voir section 'Prévisions & Irrigation').</p>
+                        <p>2. **Santé des Plantes :** Activer la surveillance prédictive des maladies pour la culture sélectionnée (voir section 'Surveillance & Santé').</p>
+                        <p>3. **Analyse du Sol :** Envisager une nouvelle analyse après 6 mois pour confirmer les niveaux de nutriments.</p>
+                    `;
+                    
+                    reportDetailsContainer.style.display = 'block'; // Afficher la section du rapport
+                    // Faire défiler jusqu'à la section du rapport
+                    reportDetailsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                } else {
+                    reportContentDiv.innerHTML = `
+                        <div class="alert alert-danger text-center">
+                            <i class="bi bi-x-circle-fill me-2"></i> Erreur: Aucune simulation trouvée pour cette culture.
+                        </div>
+                    `;
+                    reportDetailsContainer.style.display = 'block';
+                    reportDetailsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            };
+        });
+    </script>
+</body>
+</html>
